@@ -41,6 +41,8 @@ services:
       target: production
     container_name: evaluaciones-app
     restart: unless-stopped
+    depends_on:
+      - contact-api
     networks:
       - web
 

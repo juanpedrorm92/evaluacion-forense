@@ -14,13 +14,20 @@ services:
     tty: true
 
   # Uso: docker compose --profile prod up --build app-prod
+  # Requiere: docker network create web
   app-prod:
     profiles: ["prod"]
     build:
       context: .
       target: production
-    ports:
-      - "8080:80"
+    container_name: evaluaciones-app
+    restart: unless-stopped
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
 
 volumes:
   node_modules:

@@ -8,7 +8,7 @@ import heroImage from '@/assets/images/hero-profesional3.jpeg'
       <img
         class="hero__image"
         :src="heroImage"
-        alt="Profesional del Centro de Evaluaciones Forenses Amor en su espacio de trabajo"
+        alt="Profesional del Centro de Evaluaciones Forenses en su espacio de trabajo"
         width="1024"
         height="873"
       />
@@ -16,7 +16,7 @@ import heroImage from '@/assets/images/hero-profesional3.jpeg'
     </div>
 
     <div class="hero__content">
-      <p class="hero__brand reveal">Centro de Evaluaciones Forenses Amor</p>
+      <p class="hero__brand reveal">Centro de Evaluaciones Forenses</p>
       <h1 class="hero__title reveal reveal--delay-1">
         Rigor técnico al servicio de la verdad
       </h1>

@@ -54,7 +54,7 @@ onUnmounted(() => {
     <footer id="contacto" class="footer">
       <div class="container footer__grid">
         <div>
-          <p class="footer__brand">Centro de Evaluaciones Forenses Amor</p>
+          <p class="footer__brand">Centro de Evaluaciones Forenses</p>
           <p class="footer__copy">
             Evaluación técnica, rigor metodológico y compromiso ético al servicio de la verdad.
           </p>

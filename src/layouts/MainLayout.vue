@@ -59,10 +59,10 @@ onUnmounted(() => {
             Evaluación técnica, rigor metodológico y compromiso ético al servicio de la verdad.
           </p>
         </div>
-        <div>
+        <!-- <div>
           <p class="footer__label">Contacto</p>
           <p>consultas@centroevaluacionesforense.cl</p>
-        </div>
+        </div> -->
       </div>
       <div class="container footer__bottom">
         <p>© {{ new Date().getFullYear() }} Centro de Evaluaciones Forenses</p>

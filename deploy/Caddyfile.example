@@ -1,0 +1,9 @@
+centroevaluacionesforense.cl, www.centroevaluacionesforense.cl {
+	handle /api/* {
+		reverse_proxy evaluaciones-contact-api:3000
+	}
+
+	handle {
+		reverse_proxy evaluaciones-app:80
+	}
+}

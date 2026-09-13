@@ -3,23 +3,30 @@ import { nextTick, onUnmounted, reactive, ref, watch } from 'vue'
 
 const open = defineModel<boolean>({ default: false })
 
-const CONTACT_EMAIL = 'consultas@evaluacionesforensesamor.cl'
+const CONTACT_EMAIL = 'consultas@centroevaluacionesforense.cl'
 
 const form = reactive({
   name: '',
   email: '',
   phone: '',
   message: '',
+  website: '', // honeypot
 })
 
 const dialogRef = ref<HTMLDialogElement | null>(null)
 const closeBtnRef = ref<HTMLButtonElement | null>(null)
+const submitting = ref(false)
+const submitError = ref('')
+const submitSuccess = ref(false)
 
 function resetForm() {
   form.name = ''
   form.email = ''
   form.phone = ''
   form.message = ''
+  form.website = ''
+  submitError.value = ''
+  submitSuccess.value = false
 }
 
 function close() {
@@ -37,26 +44,46 @@ function onBackdropClick(event: MouseEvent) {
   }
 }
 
-function buildMailto() {
-  const subject = encodeURIComponent(
-    `Solicitud de evaluación — ${form.name.trim() || 'Consulta'}`,
-  )
-  const lines = [
-    `Nombre: ${form.name.trim()}`,
-    `Correo: ${form.email.trim()}`,
-    form.phone.trim() ? `Teléfono: ${form.phone.trim()}` : null,
-    '',
-    form.message.trim(),
-  ].filter((line) => line !== null)
+async function onSubmit() {
+  if (submitting.value) return
 
-  const body = encodeURIComponent(lines.join('\n'))
-  return `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
-}
+  submitting.value = true
+  submitError.value = ''
+  submitSuccess.value = false
 
-function onSubmit() {
-  window.location.href = buildMailto()
-  close()
-  resetForm()
+  try {
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        message: form.message.trim(),
+        website: form.website,
+      }),
+    })
+
+    const data = (await response.json().catch(() => null)) as
+      | { ok?: boolean; error?: string }
+      | null
+
+    if (!response.ok || !data?.ok) {
+      throw new Error(data?.error || 'No se pudo enviar el mensaje.')
+    }
+
+    submitSuccess.value = true
+    form.name = ''
+    form.email = ''
+    form.phone = ''
+    form.message = ''
+    form.website = ''
+  } catch (error) {
+    submitError.value =
+      error instanceof Error ? error.message : 'No se pudo enviar el mensaje.'
+  } finally {
+    submitting.value = false
+  }
 }
 
 watch(open, async (isOpen) => {
@@ -64,6 +91,7 @@ watch(open, async (isOpen) => {
   if (!dialog) return
 
   if (isOpen) {
+    resetForm()
     if (!dialog.open) dialog.showModal()
     document.body.style.overflow = 'hidden'
     await nextTick()
@@ -106,12 +134,26 @@ onUnmounted(() => {
         </button>
       </header>
 
-      <p class="modal__lead">
-        Complete el formulario y se abrirá su correo para enviar la solicitud a
+      <!-- <p class="modal__lead">
+        Complete el formulario y enviaremos su solicitud a
         <a :href="`mailto:${CONTACT_EMAIL}`">{{ CONTACT_EMAIL }}</a>.
-      </p>
+      </p> -->
 
-      <form class="modal__form" @submit.prevent="onSubmit">
+      <div v-if="submitSuccess" class="modal__success" role="status">
+        <p><strong>Mensaje enviado.</strong></p>
+        <p>Nos pondremos en contacto a la brevedad.</p>
+        <button type="button" class="btn btn--primary" @click="close">
+          Cerrar
+        </button>
+      </div>
+
+      <form v-else class="modal__form" @submit.prevent="onSubmit">
+        <!-- Honeypot anti-spam (oculto) -->
+        <label class="field field--hp" aria-hidden="true">
+          <span>Website</span>
+          <input v-model="form.website" type="text" name="website" tabindex="-1" autocomplete="off" />
+        </label>
+
         <label class="field">
           <span>Nombre</span>
           <input
@@ -120,6 +162,7 @@ onUnmounted(() => {
             name="name"
             autocomplete="name"
             required
+            :disabled="submitting"
             placeholder="Su nombre completo"
           />
         </label>
@@ -132,6 +175,7 @@ onUnmounted(() => {
             name="email"
             autocomplete="email"
             required
+            :disabled="submitting"
             placeholder="nombre@correo.cl"
           />
         </label>
@@ -143,6 +187,7 @@ onUnmounted(() => {
             type="tel"
             name="phone"
             autocomplete="tel"
+            :disabled="submitting"
             placeholder="+56 9 0000 0000"
           />
         </label>
@@ -154,16 +199,19 @@ onUnmounted(() => {
             name="message"
             rows="4"
             required
+            :disabled="submitting"
             placeholder="Indique brevemente el tipo de evaluación o consulta"
           />
         </label>
 
+        <p v-if="submitError" class="modal__error" role="alert">{{ submitError }}</p>
+
         <div class="modal__actions">
-          <button type="button" class="btn btn--outline" @click="close">
+          <button type="button" class="btn btn--outline" :disabled="submitting" @click="close">
             Cancelar
           </button>
-          <button type="submit" class="btn btn--primary">
-            Abrir correo
+          <button type="submit" class="btn btn--primary" :disabled="submitting">
+            {{ submitting ? 'Enviando…' : 'Enviar solicitud' }}
           </button>
         </div>
       </form>
@@ -255,9 +303,36 @@ onUnmounted(() => {
   margin-top: 1.5rem;
 }
 
+.modal__success {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  color: var(--color-forest);
+}
+
+.modal__success .btn {
+  justify-self: start;
+  margin-top: 0.5rem;
+}
+
+.modal__error {
+  margin: 0;
+  color: #8b2e2e;
+  font-size: 0.9rem;
+}
+
 .field {
   display: grid;
   gap: 0.4rem;
+}
+
+.field--hp {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 .field span {
@@ -295,6 +370,12 @@ onUnmounted(() => {
   background: #fff;
 }
 
+.field input:disabled,
+.field textarea:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 .field textarea {
   resize: vertical;
   min-height: 6.5rem;
@@ -309,6 +390,12 @@ onUnmounted(() => {
 
 .modal__actions .btn {
   flex: 1 1 8rem;
+}
+
+.modal__actions .btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
 }
 
 @media (max-width: 480px) {

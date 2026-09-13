@@ -61,7 +61,7 @@ onUnmounted(() => {
         </div>
         <div>
           <p class="footer__label">Contacto</p>
-          <p>consultas@evaluacionesforenses.cl</p>
+          <p>consultas@centroevaluacionesforense.cl</p>
         </div>
       </div>
       <div class="container footer__bottom">

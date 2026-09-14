@@ -9,7 +9,8 @@ const menuOpen = ref(false)
 const navItems = [
   { href: '#presentacion', label: 'Presentación' },
   { href: '#servicios', label: 'Servicios' },
-  { href: '#confianza', label: 'Confianza' },
+  { href: '#formacion', label: 'Formación' },
+  { href: '#confianza', label: 'Compromiso' },
   { href: '#contacto', label: 'Contacto' },
 ]
 
@@ -67,7 +68,8 @@ onUnmounted(() => {
         <nav class="nav__links" aria-label="Principal">
           <a href="#presentacion">Presentación</a>
           <a href="#servicios">Servicios</a>
-          <a href="#confianza">Confianza</a>
+          <a href="#formacion">Formación</a>
+          <a href="#confianza">Compromiso</a>
         </nav>
 
         <a class="btn btn--primary nav__cta" href="#contacto">Contacto</a>

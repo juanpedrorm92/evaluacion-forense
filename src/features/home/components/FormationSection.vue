@@ -81,58 +81,50 @@ const instruments = [
 </script>
 
 <template>
-  <section id="presentacion" class="section about">
+  <section id="formacion" class="section formation">
     <div class="container">
-      <PeritoPanel variant="featured" class="about__intro">
-        <h2 class="section__title">Marta Vidal Parra</h2>
-        <p class="about__role">Perito · Asistente Social</p>
-        <p class="section__lead">
-          Asistente Social con formación de postgrado en Psicología Jurídica e
-          Intervención Psicosocial, mención en Mediación Familiar y Penal.
-          Acreditada como perito ante las distintas Cortes de Apelaciones de Chile.
-        </p>
-      </PeritoPanel>
+    
 
-      <div class="about__grid">
-        <PeritoPanel as="article" class="about__block about__block--wide">
+      <div class="formation__grid">
+        <PeritoPanel as="article" class="formation__block formation__block--wide">
           <h3>Formación académica</h3>
-          <ul class="about__credentials about__credentials--logos">
+          <ul class="formation__credentials formation__credentials--logos">
             <li v-for="item in formation" :key="item.name">
-              <div class="about__logo">
+              <div class="formation__logo">
                 <img :src="item.logo" :alt="`Logo ${item.institution}`" loading="lazy" />
               </div>
-              <div class="about__credential-text">
-                <p class="about__credential-name">{{ item.name }}</p>
-                <p class="about__credential-meta">{{ item.institution }}</p>
+              <div class="formation__credential-text">
+                <p class="formation__credential-name">{{ item.name }}</p>
+                <p class="formation__credential-meta">{{ item.institution }}</p>
               </div>
             </li>
           </ul>
-          <p class="about__note">
+          <p class="formation__note">
             Acreditada como perito Asistente Social en las distintas Cortes de
             Apelaciones de Chile.
           </p>
         </PeritoPanel>
 
-        <PeritoPanel as="article" class="about__block about__block--wide">
+        <PeritoPanel as="article" class="formation__block formation__block--wide">
           <h3>Cursos de perfeccionamiento</h3>
-          <ul class="about__credentials">
+          <ul class="formation__credentials">
             <li v-for="item in courses" :key="item.name">
-              <p class="about__credential-name">{{ item.name }}</p>
-              <p class="about__credential-meta">
+              <p class="formation__credential-name">{{ item.name }}</p>
+              <p class="formation__credential-meta">
                 {{ item.institution }} · {{ item.place }}
               </p>
             </li>
           </ul>
         </PeritoPanel>
 
-        <PeritoPanel as="article" class="about__block">
+        <PeritoPanel as="article" class="formation__block">
           <h3>Ámbitos de competencia</h3>
           <ul>
             <li v-for="item in competencies" :key="item">{{ item }}</li>
           </ul>
         </PeritoPanel>
 
-        <PeritoPanel as="article" class="about__block">
+        <PeritoPanel as="article" class="formation__block">
           <h3>Instrumentos y modelos</h3>
           <ul>
             <li v-for="item in instruments" :key="item">{{ item }}</li>
@@ -144,39 +136,34 @@ const instruments = [
 </template>
 
 <style scoped>
-.about {
+.formation {
   background: transparent;
   border-block: none;
 }
 
-.about__intro {
-  max-width: 44rem;
+.formation__intro {
+  max-width: 42rem;
   margin-bottom: var(--space-xl);
+  padding: clamp(1.35rem, 3vw, 2rem);
+  background:
+    linear-gradient(155deg, rgba(122, 101, 76, 0.08), transparent 48%),
+    var(--color-panel);
+  border: 1px solid rgba(122, 101, 76, 0.08);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-panel);
 }
 
-.about__role {
-  margin-top: 0.55rem;
-  color: var(--color-wood-deep);
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.about__grid {
+.formation__grid {
   display: grid;
   gap: 0.85rem;
-  background: transparent;
-  border: none;
-  box-shadow: none;
 }
 
-.about__block h3 {
+.formation__block h3 {
   margin-bottom: 1rem;
   font-size: 1.55rem;
 }
 
-.about__block :deep(ul) {
+.formation__block :deep(ul) {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -184,14 +171,14 @@ const instruments = [
   gap: 0.75rem;
 }
 
-.about__block :deep(li) {
+.formation__block :deep(li) {
   position: relative;
   padding-left: 1rem;
   color: var(--color-ink-soft);
   line-height: 1.55;
 }
 
-.about__block :deep(li::before) {
+.formation__block :deep(li::before) {
   content: '';
   position: absolute;
   left: 0;
@@ -201,15 +188,15 @@ const instruments = [
   background: var(--color-wood);
 }
 
-.about__credentials {
+.formation__credentials {
   gap: 1.15rem;
 }
 
-.about__credentials--logos {
+.formation__credentials--logos {
   gap: 1.35rem;
 }
 
-.about__credentials--logos li {
+.formation__credentials--logos li {
   display: grid;
   grid-template-columns: 4.5rem 1fr;
   gap: 1rem;
@@ -219,11 +206,11 @@ const instruments = [
   background: rgba(240, 235, 228, 0.55);
 }
 
-.about__credentials--logos li::before {
+.formation__credentials--logos li::before {
   display: none;
 }
 
-.about__logo {
+.formation__logo {
   display: grid;
   place-items: center;
   width: 4.5rem;
@@ -233,24 +220,24 @@ const instruments = [
   border: 1px solid rgba(122, 101, 76, 0.05);
 }
 
-.about__logo img {
+.formation__logo img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.about__credential-name {
+.formation__credential-name {
   color: var(--color-ink);
   font-weight: 500;
 }
 
-.about__credential-meta {
+.formation__credential-meta {
   margin-top: 0.2rem;
   color: var(--color-muted);
   font-size: 0.92rem;
 }
 
-.about__note {
+.formation__note {
   margin-top: 1.25rem;
   padding-top: 1.25rem;
   border-top: 1px solid rgba(122, 101, 76, 0.1);
@@ -260,15 +247,15 @@ const instruments = [
 }
 
 @media (min-width: 768px) {
-  .about__grid {
+  .formation__grid {
     grid-template-columns: 1fr 1fr;
   }
 
-  .about__block--wide {
+  .formation__block--wide {
     grid-column: 1 / -1;
   }
 
-  .about__credentials {
+  .formation__credentials {
     grid-template-columns: 1fr 1fr;
   }
 }

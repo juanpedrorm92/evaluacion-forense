@@ -3,6 +3,7 @@ import logoUnab from '@/assets/images/universities/unab.png'
 import logoMayor from '@/assets/images/universities/mayor.jpg'
 import logoUct from '@/assets/images/universities/uct.png'
 import logoUfro from '@/assets/images/universities/ufro.png'
+import PeritoPanel from './PeritoPanel.vue'
 
 const formation = [
   {
@@ -82,18 +83,18 @@ const instruments = [
 <template>
   <section id="presentacion" class="section about">
     <div class="container">
-      <div class="about__intro">
-        <p class="section__eyebrow">Carta de presentación</p>
-        <h2 class="section__title">Perfil profesional</h2>
+      <PeritoPanel variant="featured" class="about__intro">
+        <h2 class="section__title">Marta Vidal Parra</h2>
+        <p class="about__role">Perito · Asistente Social</p>
         <p class="section__lead">
-          Asistente Social con formación de postgrado en psicología jurídica e
-          intervención psicosocial, mención mediación familiar y penal.
+          Asistente Social con formación de postgrado en Psicología Jurídica e
+          Intervención Psicosocial, mención en Mediación Familiar y Penal.
           Acreditada como perito ante las distintas Cortes de Apelaciones de Chile.
         </p>
-      </div>
+      </PeritoPanel>
 
       <div class="about__grid">
-        <article class="about__block about__block--wide">
+        <PeritoPanel as="article" class="about__block about__block--wide">
           <h3>Formación académica</h3>
           <ul class="about__credentials about__credentials--logos">
             <li v-for="item in formation" :key="item.name">
@@ -110,9 +111,9 @@ const instruments = [
             Acreditada como perito Asistente Social en las distintas Cortes de
             Apelaciones de Chile.
           </p>
-        </article>
+        </PeritoPanel>
 
-        <article class="about__block about__block--wide">
+        <PeritoPanel as="article" class="about__block about__block--wide">
           <h3>Cursos de perfeccionamiento</h3>
           <ul class="about__credentials">
             <li v-for="item in courses" :key="item.name">
@@ -122,21 +123,21 @@ const instruments = [
               </p>
             </li>
           </ul>
-        </article>
+        </PeritoPanel>
 
-        <article class="about__block">
+        <PeritoPanel as="article" class="about__block">
           <h3>Ámbitos de competencia</h3>
           <ul>
             <li v-for="item in competencies" :key="item">{{ item }}</li>
           </ul>
-        </article>
+        </PeritoPanel>
 
-        <article class="about__block">
+        <PeritoPanel as="article" class="about__block">
           <h3>Instrumentos y modelos</h3>
           <ul>
             <li v-for="item in instruments" :key="item">{{ item }}</li>
           </ul>
-        </article>
+        </PeritoPanel>
       </div>
     </div>
   </section>
@@ -144,8 +145,8 @@ const instruments = [
 
 <style scoped>
 .about {
-  background: var(--color-surface);
-  border-block: 1px solid var(--color-line);
+  background: transparent;
+  border-block: none;
 }
 
 .about__intro {
@@ -153,16 +154,21 @@ const instruments = [
   margin-bottom: var(--space-xl);
 }
 
-.about__grid {
-  display: grid;
-  gap: 1px;
-  background: var(--color-line);
-  border: 1px solid var(--color-line);
+.about__role {
+  margin-top: 0.55rem;
+  color: var(--color-wood-deep);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-.about__block {
-  padding: var(--space-lg);
-  background: var(--color-surface);
+.about__grid {
+  display: grid;
+  gap: 0.85rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .about__block h3 {
@@ -170,12 +176,7 @@ const instruments = [
   font-size: 1.55rem;
 }
 
-.about__block-lead {
-  margin-bottom: 1rem;
-  color: var(--color-muted);
-}
-
-.about__block ul {
+.about__block :deep(ul) {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -183,14 +184,14 @@ const instruments = [
   gap: 0.75rem;
 }
 
-.about__block li {
+.about__block :deep(li) {
   position: relative;
   padding-left: 1rem;
   color: var(--color-ink-soft);
   line-height: 1.55;
 }
 
-.about__block li::before {
+.about__block :deep(li::before) {
   content: '';
   position: absolute;
   left: 0;
@@ -204,10 +205,6 @@ const instruments = [
   gap: 1.15rem;
 }
 
-.about__credentials li {
-  padding-left: 1rem;
-}
-
 .about__credentials--logos {
   gap: 1.35rem;
 }
@@ -218,8 +215,8 @@ const instruments = [
   gap: 1rem;
   align-items: center;
   padding: 1rem;
-  border: 1px solid var(--color-line);
-  background: var(--color-paper);
+  border: 1px solid rgba(122, 101, 76, 0.06);
+  background: rgba(240, 235, 228, 0.55);
 }
 
 .about__credentials--logos li::before {
@@ -232,8 +229,8 @@ const instruments = [
   width: 4.5rem;
   height: 4.5rem;
   padding: 0.45rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  background: rgba(247, 243, 237, 0.8);
+  border: 1px solid rgba(122, 101, 76, 0.05);
 }
 
 .about__logo img {
@@ -256,7 +253,7 @@ const instruments = [
 .about__note {
   margin-top: 1.25rem;
   padding-top: 1.25rem;
-  border-top: 1px solid var(--color-line);
+  border-top: 1px solid rgba(122, 101, 76, 0.1);
   color: var(--color-ink);
   font-weight: 500;
   line-height: 1.55;

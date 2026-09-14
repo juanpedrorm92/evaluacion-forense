@@ -2,16 +2,19 @@
   /* Brand — forensic / trust */
   --color-ink: #121416;
   --color-ink-soft: #2a2e33;
-  --color-muted: #5c636b;
-  --color-line: #d8dce1;
-  --color-paper: #f5f6f7;
-  --color-paper-deep: #e8ebef;
-  --color-surface: #ffffff;
+  --color-muted: #6a6258;
+  --color-line: #d4cbc0;
+  --color-paper: #f0ebe4;
+  --color-paper-deep: #e4ddd3;
+  --color-surface: #f7f3ed;
   --color-wood: #7a654c;
   --color-wood-deep: #5c4b38;
   --color-forest: #2d4538;
   --color-forest-soft: #3f5c4a;
   --color-accent: #7a654c;
+  --color-panel: rgba(247, 243, 237, 0.9);
+  --color-panel-strong: rgba(247, 243, 237, 0.96);
+  --shadow-panel: 0 12px 36px rgba(28, 22, 16, 0.14);
 
   --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
   --font-body: 'Sora', 'Helvetica Neue', sans-serif;

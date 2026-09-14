@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import logoCentro from '@/assets/images/logo-centro.jpg'
+import studioImage from '@/assets/images/studio-forense.jpg'
 
 const scrolled = ref(false)
 
@@ -47,25 +48,34 @@ onUnmounted(() => {
       </div>
     </header>
 
-    <main>
-      <RouterView />
+    <main class="main">
+      <div class="main__atmosphere" aria-hidden="true">
+        <img
+          class="main__atmosphere-image"
+          :src="studioImage"
+          alt=""
+          width="1920"
+          height="1080"
+        />
+        <div class="main__atmosphere-veil" />
+      </div>
+      <div class="main__content">
+        <RouterView />
+      </div>
     </main>
 
     <footer id="contacto" class="footer">
       <div class="container footer__grid">
         <div>
           <p class="footer__brand">Centro de Evaluaciones Forenses</p>
+          <p class="footer__expert">Marta Vidal Parra Perito Judicial Especialidad Asistente Social</p>
           <p class="footer__copy">
             Evaluación técnica, rigor metodológico y compromiso ético al servicio de la verdad.
           </p>
         </div>
-        <!-- <div>
-          <p class="footer__label">Contacto</p>
-          <p>consultas@centroevaluacionesforense.cl</p>
-        </div> -->
       </div>
       <div class="container footer__bottom">
-        <p>© {{ new Date().getFullYear() }} Centro de Evaluaciones Forenses</p>
+        <p>© {{ new Date().getFullYear() }} Centro de Evaluaciones Forenses · Marta Vidal Parra</p>
       </div>
     </footer>
   </div>
@@ -74,6 +84,49 @@ onUnmounted(() => {
 <style scoped>
 .layout {
   min-height: 100vh;
+}
+
+.main {
+  position: relative;
+  isolation: isolate;
+}
+
+.main__atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.main__atmosphere-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  transform: scale(1.03);
+}
+
+.main__atmosphere-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(10, 12, 14, 1) 0%,
+      rgba(10, 12, 14, 0.88) 8%,
+      rgba(10, 12, 14, 0.55) 22%,
+      rgba(10, 12, 14, 0.35) 38%,
+      transparent 55%
+    ),
+    linear-gradient(90deg, rgba(10, 12, 14, 0.82) 0%, rgba(10, 12, 14, 0.58) 48%, rgba(10, 12, 14, 0.7) 100%),
+    linear-gradient(0deg, rgba(10, 12, 14, 0.78) 0%, rgba(10, 12, 14, 0.42) 45%, rgba(10, 12, 14, 0.62) 100%);
+}
+
+.main__content {
+  position: relative;
+  z-index: 1;
 }
 
 .nav {
@@ -91,8 +144,8 @@ onUnmounted(() => {
 
 .nav--solid {
   color: var(--color-ink);
-  background: rgba(245, 246, 247, 0.92);
-  box-shadow: 0 1px 0 var(--color-line);
+  background: rgba(247, 243, 237, 0.94);
+  box-shadow: 0 1px 0 rgba(122, 101, 76, 0.18);
   backdrop-filter: blur(10px);
 }
 
@@ -166,6 +219,8 @@ onUnmounted(() => {
 }
 
 .footer {
+  position: relative;
+  z-index: 1;
   padding-block: var(--space-xl) var(--space-lg);
   background: var(--color-ink);
   color: rgba(255, 255, 255, 0.78);
@@ -177,25 +232,25 @@ onUnmounted(() => {
 }
 
 .footer__brand {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.35rem;
   color: #fff;
   font-family: var(--font-display);
   font-size: 1.6rem;
   font-weight: 600;
 }
 
+.footer__expert {
+  margin-bottom: 0.75rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
 .footer__copy {
   max-width: 28rem;
   line-height: 1.7;
-}
-
-.footer__label {
-  margin-bottom: 0.65rem;
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 .footer__bottom {

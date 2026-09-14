@@ -18,7 +18,7 @@ import heroImage from '@/assets/images/hero-profesional3.jpeg'
 
     <div class="hero__content">
       <p class="hero__brand reveal">Centro de Evaluaciones Forenses</p>
-      <p class="hero__expert reveal reveal--delay-1">Perito Marta Vidal Parra</p>
+      <p class="hero__expert reveal reveal--delay-1">Perito Judicial, Marta Vidal Parra</p>
       <h1 class="hero__title reveal reveal--delay-2">
         Rigor técnico al servicio de la verdad
       </h1>

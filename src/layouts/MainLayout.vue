@@ -1,29 +1,56 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import logoCentro from '@/assets/images/logo-centro.jpg'
 import studioImage from '@/assets/images/studio-forense.jpg'
 
 const scrolled = ref(false)
+const menuOpen = ref(false)
+
+const navItems = [
+  { href: '#presentacion', label: 'Presentación' },
+  { href: '#servicios', label: 'Servicios' },
+  { href: '#confianza', label: 'Confianza' },
+  { href: '#contacto', label: 'Contacto' },
+]
 
 function onScroll() {
   scrolled.value = window.scrollY > 24
 }
 
+function toggleMenu() {
+  menuOpen.value = !menuOpen.value
+}
+
+function closeMenu() {
+  menuOpen.value = false
+}
+
+function onKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape') closeMenu()
+}
+
+watch(menuOpen, (open) => {
+  document.body.style.overflow = open ? 'hidden' : ''
+})
+
 onMounted(() => {
   onScroll()
   window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('keydown', onKeydown)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('keydown', onKeydown)
+  document.body.style.overflow = ''
 })
 </script>
 
 <template>
   <div class="layout">
-    <header class="nav" :class="{ 'nav--solid': scrolled }">
+    <header class="nav" :class="{ 'nav--solid': scrolled, 'nav--menu-open': menuOpen }">
       <div class="container nav__inner">
-        <a href="#inicio" class="nav__brand">
+        <a href="#inicio" class="nav__brand" @click="closeMenu">
           <img
             class="nav__logo"
             :src="logoCentro"
@@ -39,14 +66,51 @@ onUnmounted(() => {
 
         <nav class="nav__links" aria-label="Principal">
           <a href="#presentacion">Presentación</a>
-          <a href="#valores">Valores</a>
           <a href="#servicios">Servicios</a>
           <a href="#confianza">Confianza</a>
         </nav>
 
         <a class="btn btn--primary nav__cta" href="#contacto">Contacto</a>
+
+        <button
+          type="button"
+          class="nav__burger"
+          :aria-expanded="menuOpen"
+          aria-controls="menu-movil"
+          :aria-label="menuOpen ? 'Cerrar menú' : 'Abrir menú'"
+          @click="toggleMenu"
+        >
+          <span class="nav__burger-line" aria-hidden="true" />
+          <span class="nav__burger-line" aria-hidden="true" />
+          <span class="nav__burger-line" aria-hidden="true" />
+        </button>
       </div>
     </header>
+
+    <div
+      class="nav__backdrop"
+      :class="{ 'nav__backdrop--open': menuOpen }"
+      aria-hidden="true"
+      @click="closeMenu"
+    />
+
+    <nav
+      id="menu-movil"
+      class="nav__drawer"
+      :class="{ 'nav__drawer--open': menuOpen }"
+      aria-label="Menú móvil"
+      :aria-hidden="!menuOpen"
+    >
+      <a
+        v-for="item in navItems"
+        :key="item.href"
+        :href="item.href"
+        class="nav__drawer-link"
+        @click="closeMenu"
+      >
+        {{ item.label }}
+      </a>
+    </nav>
 
     <main class="main">
       <div class="main__atmosphere" aria-hidden="true">
@@ -142,7 +206,8 @@ onUnmounted(() => {
     backdrop-filter 280ms ease;
 }
 
-.nav--solid {
+.nav--solid,
+.nav--menu-open {
   color: var(--color-ink);
   background: rgba(247, 243, 237, 0.94);
   box-shadow: 0 1px 0 rgba(122, 101, 76, 0.18);
@@ -210,12 +275,110 @@ onUnmounted(() => {
 }
 
 .nav__cta {
+  display: none;
   flex-shrink: 0;
 }
 
 .nav--solid .nav__cta {
   background: var(--color-ink);
   color: #fff;
+}
+
+.nav__burger {
+  display: grid;
+  gap: 5px;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-content: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(10, 12, 14, 0.28);
+  color: inherit;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease;
+}
+
+.nav--solid .nav__burger,
+.nav--menu-open .nav__burger {
+  border-color: rgba(122, 101, 76, 0.28);
+  background: rgba(247, 243, 237, 0.7);
+}
+
+.nav__burger-line {
+  display: block;
+  width: 1.15rem;
+  height: 1.5px;
+  background: currentColor;
+  transition:
+    transform 220ms ease,
+    opacity 180ms ease;
+}
+
+.nav--menu-open .nav__burger-line:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+
+.nav--menu-open .nav__burger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.nav--menu-open .nav__burger-line:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+.nav__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  background: rgba(10, 12, 14, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+}
+
+.nav__backdrop--open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav__drawer {
+  position: fixed;
+  top: var(--nav-height);
+  right: 0;
+  z-index: 36;
+  display: grid;
+  gap: 0.25rem;
+  width: min(100%, 18rem);
+  padding: 1.25rem 1.35rem 1.5rem;
+  background: rgba(247, 243, 237, 0.97);
+  color: var(--color-ink);
+  border-left: 1px solid rgba(122, 101, 76, 0.16);
+  box-shadow: -12px 16px 40px rgba(18, 14, 10, 0.18);
+  transform: translateX(104%);
+  transition: transform 280ms var(--ease-out);
+}
+
+.nav__drawer--open {
+  transform: translateX(0);
+}
+
+.nav__drawer-link {
+  display: block;
+  padding: 0.85rem 0.35rem;
+  border-bottom: 1px solid rgba(122, 101, 76, 0.12);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.nav__drawer-link:last-child {
+  border-bottom: none;
+  margin-top: 0.35rem;
+  color: var(--color-wood-deep);
 }
 
 .footer {
@@ -264,6 +427,16 @@ onUnmounted(() => {
 @media (min-width: 900px) {
   .nav__links {
     display: flex;
+  }
+
+  .nav__cta {
+    display: inline-flex;
+  }
+
+  .nav__burger,
+  .nav__backdrop,
+  .nav__drawer {
+    display: none;
   }
 
   .footer__grid {

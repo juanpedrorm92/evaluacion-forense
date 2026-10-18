@@ -1,17 +1,53 @@
 <script setup lang="ts">
-import heroImage from '@/assets/images/hero-profesional3.jpeg'
+import { onMounted, ref } from 'vue'
+
+const loaded = ref(false)
+const imgRef = ref<HTMLImageElement | null>(null)
+
+onMounted(() => {
+  const img = imgRef.value
+  if (img?.complete && img.naturalWidth > 0) {
+    loaded.value = true
+  }
+})
+
+function onLoad() {
+  loaded.value = true
+}
 </script>
 
 <template>
   <section id="inicio" class="hero" aria-label="Presentación principal">
     <div class="hero__media">
-      <img
-        class="hero__image"
-        :src="heroImage"
-        alt="Profesional del Centro de Evaluaciones Forenses en su espacio de trabajo"
-        width="1024"
-        height="873"
-      />
+      <picture>
+        <source
+          type="image/webp"
+          srcset="
+            /images/hero-800.webp 800w,
+            /images/hero-1200.webp 1200w,
+            /images/hero-1600.webp 1600w
+          "
+          sizes="100vw"
+        />
+        <img
+          ref="imgRef"
+          class="hero__image"
+          :class="{ 'hero__image--ready': loaded }"
+          src="/images/hero-1200.jpg"
+          srcset="
+            /images/hero-800.jpg 800w,
+            /images/hero-1200.jpg 1200w,
+            /images/hero-1600.jpg 1600w
+          "
+          sizes="100vw"
+          width="1584"
+          height="672"
+          alt="Profesional del Centro de Evaluaciones Forenses en su espacio de trabajo"
+          fetchpriority="high"
+          decoding="async"
+          @load="onLoad"
+        />
+      </picture>
       <div class="hero__veil" aria-hidden="true" />
       <div class="hero__fog" aria-hidden="true" />
     </div>
@@ -49,15 +85,31 @@ import heroImage from '@/assets/images/hero-profesional3.jpeg'
 .hero__media {
   position: absolute;
   inset: 0;
+  /* Placeholder difuminado mientras llega la imagen real */
+  background-color: #1a1612;
+  background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAOACADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABQME/8QAJxAAAgEDAgMJAAAAAAAAAAAAAQIDAAQRITEFEhMiMlFhYnGBwdH/xAAWAQEBAQAAAAAAAAAAAAAAAAABAgP/xAAYEQACAwAAAAAAAAAAAAAAAAAAAQIRIf/aAAwDAQACEQMRAD8AeaWI8Th1ODE4281oC+uzFxKVXbsSSgBRudvqt1wiSSk6g8jDGdgSPyhZ7CSWYuJj0ockA94ex8aJWMVpQJDd3jnnZpYgVaPl3AON/mkel1o1MiSj0nXFDo4E4MaqjMcFgNdTSSLcICHnYkbEGoeGiVn/2Q==');
+  background-size: cover;
+  background-position: center 22%;
 }
 
+.hero__media picture,
 .hero__image {
   display: block;
   width: 100%;
   height: 100%;
+}
+
+.hero__image {
   object-fit: cover;
   object-position: center 22%;
   transform: scale(1.04);
+  opacity: 0;
+  transition: opacity 480ms var(--ease-out);
+  animation: none;
+}
+
+.hero__image--ready {
+  opacity: 1;
   animation: hero-zoom 8s var(--ease-out) forwards;
 }
 
@@ -173,6 +225,21 @@ import heroImage from '@/assets/images/hero-profesional3.jpeg'
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .hero__image,
+  .hero__image--ready {
+    transform: none;
+    animation: none;
+    transition: opacity 200ms ease;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+
 /* Mobile: imagen arriba + texto debajo, sin hueco negro */
 @media (max-width: 720px) {
   .hero {
@@ -206,12 +273,17 @@ import heroImage from '@/assets/images/hero-profesional3.jpeg'
     width: 100%;
     height: clamp(15rem, 58vw, 22rem);
     flex-shrink: 0;
+    background-position: center 18%;
   }
 
   .hero__image {
     transform: none;
     animation: none;
     object-position: center 18%;
+  }
+
+  .hero__image--ready {
+    animation: none;
   }
 
   .hero__veil {

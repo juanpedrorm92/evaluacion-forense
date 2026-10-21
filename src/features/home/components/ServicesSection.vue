@@ -1,76 +1,8 @@
 <script setup lang="ts">
 import PeritoPanel from './PeritoPanel.vue'
+import { serviceAreas } from '../siteContent'
 
-type ServiceGroup = {
-  title: string
-  items: string[]
-}
-
-type ServiceArea = {
-  id: string
-  title: string
-  icon: 'penal' | 'civil' | 'laboral' | 'familia'
-  groups?: ServiceGroup[]
-  items?: string[]
-}
-
-const areas: ServiceArea[] = [
-  {
-    id: 'penal',
-    title: 'Ámbito penal',
-    icon: 'penal',
-    groups: [
-      {
-        title: 'Víctimas',
-        items: [
-          'Valoración de daño psicológico.',
-          'Credibilidad del testimonio en causas de delitos sexuales.',
-          'Evaluación de personalidad y funciones cognitivas.',
-        ],
-      },
-      {
-        title: 'Imputados',
-        items: [
-          'Evaluación de facultades mentales y funciones cognitivas.',
-          'Evaluación de personalidad.',
-          'Evaluación de riesgo por delitos violentos.',
-          'Evaluación de arraigo familiar, laboral y social.',
-          'Evaluación social a nivel familiar.',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'civil',
-    title: 'Ámbito civil',
-    icon: 'civil',
-    items: [
-      'Valoración de daño y secuelas emocionales.',
-      'Incapacidades psíquicas.',
-      'Valoración de los mecanismos de protección.',
-    ],
-  },
-  {
-    id: 'laboral',
-    title: 'Ámbito laboral',
-    icon: 'laboral',
-    items: [
-      'Valoración de daño producto de situaciones de maltrato o acoso dentro de la empresa.',
-      'Evaluaciones de psicopatologías derivadas del trabajo.',
-    ],
-  },
-  {
-    id: 'familia',
-    title: 'Materia de familia',
-    icon: 'familia',
-    items: [
-      'Evaluaciones psicosociales de competencias de crianza y cuidado de niños, niñas y adolescentes.',
-      'Evaluaciones psicosociales en materia del Régimen de Relación Directa y Regular.',
-      'Evaluación socioeconómica en materia de pensión de alimentos, compensación económica, divorcio, entre otras.',
-      'Evaluaciones de contexto de violencia intrafamiliar no constitutiva de delito, Ley N° 19.968.',
-    ],
-  },
-]
+const areas = serviceAreas
 </script>
 
 <template>
@@ -79,10 +11,6 @@ const areas: ServiceArea[] = [
       <PeritoPanel class="services__panel">
         <p class="section__eyebrow">Ámbito de trabajo</p>
         <h2 class="section__title">Servicios</h2>
-        <p class="section__lead">
-          Evaluaciones periciales especializadas en materias penales, civiles,
-          laborales y de familia, con respaldo técnico y criterio ético.
-        </p>
 
         <div class="services__grid">
           <article v-for="area in areas" :key="area.id" class="service" :class="`service--${area.id}`">
@@ -160,16 +88,24 @@ const areas: ServiceArea[] = [
             <div v-if="area.groups" class="service__groups">
               <div v-for="group in area.groups" :key="group.title" class="service__group">
                 <h4>{{ group.title }}</h4>
-                <ul>
-                  <li v-for="item in group.items" :key="item">{{ item }}</li>
-                </ul>
+                <article v-for="item in group.items" :key="item.name" class="offer">
+                  <h5>{{ item.name }}</h5>
+                  <p>{{ item.purpose }}</p>
+                </article>
               </div>
             </div>
 
-            <ul v-else>
-              <li v-for="item in area.items" :key="item">{{ item }}</li>
-            </ul>
+            <div v-else class="service__offers">
+              <article v-for="item in area.items" :key="item.name" class="offer">
+                <h5>{{ item.name }}</h5>
+                <p>{{ item.purpose }}</p>
+              </article>
+            </div>
           </article>
+        </div>
+
+        <div class="services__cta">
+          <a class="btn btn--primary" href="#contacto">Solicita cotización</a>
         </div>
       </PeritoPanel>
     </div>
@@ -241,29 +177,41 @@ const areas: ServiceArea[] = [
   text-transform: uppercase;
 }
 
-.service ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.service__offers,
+.service__group {
   display: grid;
-  gap: 0.7rem;
+  align-content: start;
+  gap: 1.25rem;
 }
 
-.service li {
-  position: relative;
-  padding-left: 1rem;
+.offer {
+  display: grid;
+  gap: 0.55rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(122, 101, 76, 0.16);
+}
+
+.offer h5 {
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 2.4vw, 2.05rem);
+  font-weight: 600;
+  line-height: 1.12;
+}
+
+.offer p {
+  max-width: 38rem;
   color: var(--color-muted);
-  line-height: 1.55;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
-.service li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.65em;
-  width: 0.35rem;
-  height: 0.35rem;
-  background: var(--color-wood);
+.services__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: var(--space-xl);
 }
 
 @media (min-width: 900px) {
@@ -276,9 +224,20 @@ const areas: ServiceArea[] = [
     grid-column: 1 / -1;
   }
 
-  .service--penal .service__groups {
+  .service--penal .service__groups,
+  .service--familia .service__offers {
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .services__cta {
+    flex-direction: column;
+  }
+
+  .services__cta .btn {
+    width: calc(100% - 4.75rem);
   }
 }
 </style>

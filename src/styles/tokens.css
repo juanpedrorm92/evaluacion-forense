@@ -94,6 +94,7 @@ button {
 
 .section {
   padding-block: var(--space-2xl);
+  scroll-margin-top: calc(var(--nav-height) + 0.75rem);
 }
 
 .section__eyebrow {

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { expert } from '../siteContent'
 
 const loaded = ref(false)
 const imgRef = ref<HTMLImageElement | null>(null)
@@ -54,17 +55,16 @@ function onLoad() {
 
     <div class="hero__content">
       <p class="hero__brand reveal">Centro de Evaluaciones Forenses</p>
-      <p class="hero__expert reveal reveal--delay-1">Perito Judicial, Marta Vidal Parra</p>
+      <p class="hero__expert reveal reveal--delay-1">{{ expert.name }}</p>
+      <p class="hero__role reveal reveal--delay-1">Perito judicial · Asistente Social</p>
       <h1 class="hero__title reveal reveal--delay-2">
-        Rigor técnico al servicio de la verdad
+        {{ expert.headline }}
       </h1>
       <p class="hero__lead reveal reveal--delay-3">
-        Asistente Social, Magíster en Psicología Jurídica e Intervención
-        Psicosocial, mención Mediación Familiar y Penal. Perito acreditada ante
-        las Cortes de Apelaciones de Chile.
+        {{ expert.lead }}
       </p>
       <div class="hero__actions reveal reveal--delay-4">
-        <a class="btn btn--primary" href="#presentacion">Conocer el centro</a>
+        <a class="btn btn--primary" href="#contacto">Solicita cotización</a>
         <a class="btn btn--ghost" href="#servicios">Ver servicios</a>
       </div>
     </div>
@@ -160,7 +160,6 @@ function onLoad() {
 }
 
 .hero__expert {
-  margin-bottom: 1rem;
   font-family: var(--font-display);
   font-size: clamp(1.55rem, 3vw, 2.15rem);
   font-weight: 600;
@@ -168,11 +167,20 @@ function onLoad() {
   line-height: 1.15;
 }
 
-.hero__title {
-  max-width: 14ch;
-  font-size: clamp(2.2rem, 6vw, 4.4rem);
+.hero__role {
+  margin-bottom: 0.85rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.78rem;
   font-weight: 600;
-  line-height: 1.05;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero__title {
+  max-width: 18ch;
+  font-size: clamp(2rem, 4.6vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.08;
 }
 
 .hero__lead {
@@ -187,7 +195,7 @@ function onLoad() {
   display: flex;
   flex-wrap: wrap;
   gap: 0.85rem;
-  margin-top: 2rem;
+  margin-top: 1.75rem;
 }
 
 .reveal {
@@ -255,8 +263,8 @@ function onLoad() {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 4;
-    height: 5.5rem;
+    z-index: 2;
+    height: 3.5rem;
     pointer-events: none;
     background: linear-gradient(
       to bottom,
@@ -271,7 +279,7 @@ function onLoad() {
     position: relative;
     inset: auto;
     width: 100%;
-    height: clamp(15rem, 58vw, 22rem);
+    height: 12.5rem;
     flex-shrink: 0;
     background-position: center 18%;
   }
@@ -299,12 +307,21 @@ function onLoad() {
     width: 100%;
     max-width: none;
     margin: 0;
-    padding: 1.5rem 1.25rem 3.25rem;
+    padding: 1.15rem 1.25rem 1.35rem;
     background: var(--color-ink);
+    z-index: 3;
+  }
+
+  .hero__lead {
+    margin-top: 0.85rem;
+  }
+
+  .hero__actions {
+    margin-top: 1.15rem;
   }
 
   .hero__title {
-    font-size: clamp(1.9rem, 8vw, 2.6rem);
+    font-size: clamp(1.85rem, 8vw, 2.45rem);
   }
 
   .hero__actions {
@@ -313,7 +330,7 @@ function onLoad() {
   }
 
   .hero__actions .btn {
-    width: 100%;
+    width: calc(100% - 4.75rem);
   }
 }
 </style>

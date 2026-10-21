@@ -5,7 +5,7 @@ import nodemailer from 'nodemailer'
 const app = express()
 const PORT = Number(process.env.PORT || 3000)
 
-const CONTACT_TO = process.env.CONTACT_TO || 'consultas@centroevaluacionesforense.cl'
+const CONTACT_TO = process.env.CONTACT_TO || 'centroevaluacionesforense@gmail.com'
 const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com'
 const SMTP_PORT = Number(process.env.SMTP_PORT || 587)
 const SMTP_USER = process.env.SMTP_USER || ''
@@ -58,10 +58,15 @@ app.post('/api/contact', async (req, res) => {
     const name = sanitize(req.body?.name).slice(0, 120)
     const email = sanitize(req.body?.email).slice(0, 160)
     const phone = sanitize(req.body?.phone).slice(0, 40)
+    const cause = sanitize(req.body?.cause).slice(0, 80)
+    const commune = sanitize(req.body?.commune).slice(0, 80)
     const message = sanitize(req.body?.message).slice(0, 2000)
 
-    if (!name || !email || !message) {
-      return res.status(400).json({ ok: false, error: 'Complete nombre, correo y mensaje.' })
+    if (!name || !email || !phone || !cause || !commune || !message) {
+      return res.status(400).json({
+        ok: false,
+        error: 'Complete nombre, correo, teléfono, tipo de causa, comuna y mensaje.',
+      })
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -91,7 +96,9 @@ app.post('/api/contact', async (req, res) => {
       '',
       `Nombre: ${name}`,
       `Correo: ${email}`,
-      phone ? `Teléfono: ${phone}` : null,
+      `Teléfono: ${phone}`,
+      `Tipo de causa: ${cause}`,
+      `Comuna: ${commune}`,
       '',
       'Mensaje:',
       message,

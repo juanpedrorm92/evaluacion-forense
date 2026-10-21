@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { nextTick, onUnmounted, reactive, ref, watch } from 'vue'
+import { contact } from '../siteContent'
 
 const open = defineModel<boolean>({ default: false })
 
-const CONTACT_EMAIL = 'consultas@centroevaluacionesforense.cl'
+const CONTACT_EMAIL = contact.email
 
 const form = reactive({
   name: '',

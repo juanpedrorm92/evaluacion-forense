@@ -2,8 +2,8 @@
 import HeroSection from './components/HeroSection.vue'
 import ProfileSection from './components/ProfileSection.vue'
 import ServicesSection from './components/ServicesSection.vue'
-import TrustSection from './components/TrustSection.vue'
 import FormationSection from './components/FormationSection.vue'
+import ContactSection from './components/ContactSection.vue'
 </script>
 
 <template>
@@ -12,7 +12,7 @@ import FormationSection from './components/FormationSection.vue'
     <ProfileSection />
     <ServicesSection />
     <FormationSection />
-    <TrustSection />
+    <ContactSection />
   </div>
 </template>
 

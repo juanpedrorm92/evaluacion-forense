@@ -47,7 +47,7 @@ import { aboutParagraphs, credentials, expert } from '../siteContent'
             <dt>{{ item.label }}</dt>
             <dd>
               <strong>{{ item.value }}</strong>
-              <span>{{ item.detail }}</span>
+              <span v-if="item.detail">{{ item.detail }}</span>
             </dd>
           </div>
         </dl>

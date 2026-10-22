@@ -4,7 +4,7 @@ services:
       context: .
       target: development
     ports:
-      - "5173:5173"
+      - "5174:5173"
     volumes:
       - .:/app
       - node_modules:/app/node_modules

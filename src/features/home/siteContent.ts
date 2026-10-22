@@ -37,7 +37,7 @@ export const credentials = [
   {
     label: 'Título',
     value: 'Asistente Social',
-    detail: 'Universidad de La Frontera, 2007',
+    detail: '',
   },
   {
     label: 'Postgrado',
@@ -245,7 +245,7 @@ export const contact = {
   city: 'Temuco',
   region: 'La Araucanía',
   coverage: 'Temuco, Padre Las Casas y Villarrica. Otras regiones con coordinación previa.',
-  hours: 'Lunes a viernes, 9:00 a 18:00',
+  hours: 'Lunes a viernes, 8:30 am a 18:00 hrs',
   modality: 'Presencial en Temuco y en línea cuando la distancia o el tribunal lo permiten.',
 }
 

@@ -204,6 +204,11 @@ async function onSubmit() {
 .contact__layout {
   display: grid;
   gap: var(--space-xl);
+  min-width: 0;
+}
+
+.contact__layout > * {
+  min-width: 0;
 }
 
 .contact__channels {
@@ -217,6 +222,7 @@ async function onSubmit() {
 .contact__channels li {
   display: grid;
   gap: 0.15rem;
+  min-width: 0;
 }
 
 .contact__channels span {
@@ -231,6 +237,7 @@ async function onSubmit() {
 .contact__channels strong {
   color: var(--color-ink);
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .contact__channels a:hover {
@@ -240,11 +247,13 @@ async function onSubmit() {
 .contact__channels p {
   color: var(--color-muted);
   line-height: 1.55;
+  overflow-wrap: anywhere;
 }
 
 .contact__form {
   display: grid;
   gap: 1rem;
+  min-width: 0;
 }
 
 .contact__row {
@@ -267,6 +276,7 @@ async function onSubmit() {
 .field {
   display: grid;
   gap: 0.4rem;
+  min-width: 0;
 }
 
 .field--hp {
@@ -288,6 +298,8 @@ async function onSubmit() {
 .field select,
 .field textarea {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   padding: 0.75rem 0.9rem;
   border: 1px solid var(--color-line);
   border-radius: 2px;
@@ -347,8 +359,12 @@ async function onSubmit() {
 }
 
 @media (max-width: 640px) {
+  .contact__form {
+    padding-right: 2.75rem;
+  }
+
   .contact__form .btn {
-    width: calc(100% - 4.75rem);
+    width: 100%;
   }
 }
 </style>
